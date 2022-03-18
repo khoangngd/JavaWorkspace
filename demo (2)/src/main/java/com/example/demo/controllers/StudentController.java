@@ -6,11 +6,16 @@ import com.example.demo.entities.Teacher;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.expression.Strings;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -29,9 +34,91 @@ public class StudentController {
     @Autowired
     private StudentRepository _studentRepository;
     @Autowired
-    private TeacherRepository teacherRepository ;
+    private TeacherRepository teacherRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/getAllStudent")
+    public void getAllStudent() throws IOException {
+        File resource = new ClassPathResource("query\\StudentQuery.txt").getFile();
+        String queryText = new String(Files.readAllBytes(resource.toPath()));
+
+        //String sql = "SELECT * FROM STUDENTS";
+        String sql = queryText;
+        //List<Object> listJDBC = jdbcTemplate.queryForObject(sql, new CustomerRowMapper());
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql);
+
+        SqlRowSetMetaData resultSetMetaData = rs.getMetaData();
+        int columnsNumber = resultSetMetaData.getColumnCount();
+
+        String test = "";
+        while (rs.next()) {
+            for (int i = 1; i <= columnsNumber; i++) {
+                //test += rs.getString(i).trim();
+                test += rs.getString(i) == null ? "" : rs.getString(i).trim();
+                if (i > 0 && i < columnsNumber) {
+                    test += "|";
+                }
+                if (i == columnsNumber) {
+                    test += "\r\n";
+                }
+            }
+        }
+
+        System.out.println(test);
+
+
+        Format formatter = new SimpleDateFormat("yyyyMMdd");
+        String today = formatter.format(new Date());
+        FileWriter writer = new FileWriter("C:\\dev\\sam\\production\\DMS0100M_" + today + ".dat");
+        writer.write(test);
+        writer.close();
+
+
+    }
+
+    @GetMapping("/getAllTeacher")
+    public void getAllTeacher() throws IOException {
+        File resource = new ClassPathResource("query\\TeacherQuery.txt").getFile();
+        String queryText = new String(Files.readAllBytes(resource.toPath()));
+
+
+        //String sql = "SELECT * FROM STUDENTS";
+        String sql = queryText;
+        //List<Object> listJDBC = jdbcTemplate.queryForObject(sql, new CustomerRowMapper());
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql);
+
+        SqlRowSetMetaData resultSetMetaData = rs.getMetaData();
+        int columnsNumber = resultSetMetaData.getColumnCount();
+
+        String test = "";
+        while (rs.next()) {
+            for (int i = 1; i <= columnsNumber; i++) {
+                test += rs.getString(i) == null ? "" : rs.getString(i).trim();
+                if (i > 0 && i < columnsNumber) {
+                    test += "|";
+                }
+                if (i == columnsNumber) {
+                    test += "\r\n";
+                }
+            }
+        }
+
+        System.out.println(test);
+
+
+        Format formatter = new SimpleDateFormat("yyyyMMdd");
+        String today = formatter.format(new Date());
+        FileWriter writer = new FileWriter("C:\\dev\\sam\\production\\DMS0200M_" + today + ".dat");
+        writer.write(test);
+        writer.close();
+
+    }
+
+
+    //below using JPA
+   /* @GetMapping("/getAllStudent")
     public List<Student> getAllStudent() throws IOException {
         Format formatter = new SimpleDateFormat("yyyyMMdd");
         String today = formatter.format(new Date());
@@ -53,7 +140,6 @@ public class StudentController {
         return list;
     }
 
-
     @GetMapping("/getAllTeacher")
     public List<Teacher> getAllTeacher() throws IOException {
         Format formatter = new SimpleDateFormat("yyyyMMdd");
@@ -73,7 +159,8 @@ public class StudentController {
         writer2.close();
 
         return list2;
-    }
+    }*/
+
 
 //    @GetMapping("/getAllStudent/{id}")
 //    public List<Student> getAll(@PathVariable int id) throws IOException {
