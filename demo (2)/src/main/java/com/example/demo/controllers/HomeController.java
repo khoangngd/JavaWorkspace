@@ -9,8 +9,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(){
-        return "layout/layout";
-        //return "home";
+        //return "layout/layout";
+        return "home";
     }
 }
 
