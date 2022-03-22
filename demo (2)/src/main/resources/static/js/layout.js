@@ -12,9 +12,11 @@ $(document).ready(function () {
                 //data: typeService,
                 success: function (res) {
                     console.log(res);
-                    alert('done');
-
+                    alert('Done!');
+                },error: function (jqXhr, textStatus, errorMessage) {
+                    alert('Error!');
                 }
+
             });
         }
         if (typeService == 2  || typeService == 0) {
