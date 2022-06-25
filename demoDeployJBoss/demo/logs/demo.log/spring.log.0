@@ -1,0 +1,6 @@
+[2022-06-21 07:44:58.832] - 5148 INFO [restartedMain] --- org.apache.catalina.core.StandardService: Starting service [Tomcat]
+[2022-06-21 07:44:58.833] - 5148 INFO [restartedMain] --- org.apache.catalina.core.StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.63]
+[2022-06-21 07:44:58.916] - 5148 INFO [restartedMain] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Initializing Spring embedded WebApplicationContext
+[2022-06-21 07:45:19.691] - 5148 INFO [http-nio-8081-exec-1] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2022-06-21 07:48:08.211] - 5148 INFO [Thread-8] --- org.apache.catalina.core.StandardService: Stopping service [Tomcat]
+[2022-06-21 07:48:08.213] - 5148 INFO [Thread-8] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Destroying Spring FrameworkServlet 'dispatcherServlet'
